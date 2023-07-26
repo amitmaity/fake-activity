@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fake Activity</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<button id="target">Target</button>
+<br/><br/>
+Clicks: <span id="click-count"></span>
+<div id="result">Wait for the simulation to begin !</div>
+<script>
+    jQuery(document).ready(function ($) {
+        $("body").keypress(function (e) {
+            // logs the pressed key on the screen
+            document.getElementById("result").innerHTML = String.fromCharCode(e.which) + " key has been pressed.";
+        });
+    });
+    const clickEvent = new MouseEvent('click');
+    const targetButton = document.getElementById('target');
+
+    let clickCount = 0;
+    const clickCountEl = document.getElementById('click-count');
+    clickCountEl.innerText = clickCount;
+
+    targetButton.addEventListener('click', () => {
+        clickCount++;
+        clickCountEl.innerText = clickCount;
+    });
+
+    // function to trigger the keypress
+    jQuery.fn.simulateKeyPress = function (character) {
+        jQuery(this).trigger({
+            type: 'keypress',
+            which: character.charCodeAt(0)
+        });
+    };
+
+    setInterval(() => {
+        const clickEvent = new MouseEvent('click');
+        targetButton.dispatchEvent(clickEvent);
+        const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+        const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)]
+        $("body").simulateKeyPress(randomLetter);
+    }, 5000);
+
+</script>
+</body>
+</html>
